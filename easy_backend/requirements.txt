@@ -1,3 +1,4 @@
 djangorestframework==3.11.1
 djangorestframework-simplejwt==4.4.0
 psycopg2==2.8.5
+PyJWT==v1.7.1
