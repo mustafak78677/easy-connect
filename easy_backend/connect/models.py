@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.postgres.fields import JSONField
 
 # Create your models here.
 
@@ -45,6 +46,14 @@ class EndUser(models.Model):
 
     def __str__(self):
         return self.user_id.username
+
+class DynamicTheme(models.Model):
+    buid = models.ForeignKey(Organisation, on_delete=models.DO_NOTHING)
+    theme = JSONField()
+    menu = JSONField()
+
+    def __str__(self):
+        return self.buid.name
 
 
 
