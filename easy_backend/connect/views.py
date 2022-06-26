@@ -55,3 +55,37 @@ def enduserregister(request):
     enduser.save()
 
     return Response({'success': 'Registration Successfull'})
+
+@api_view(['POST'])
+def organiserregister(request):
+    data = request.data['data']
+    print(data)
+    if User.objects.filter(username=data['username']).exists():
+        print('user exists')
+        return Response({'error': 'Username already exists'})
+    if User.objects.filter(email=data['email']).exists():
+        print('email exists')
+        return Response({'error': 'Email already exists'})
+
+    user = User.objects.create_user(
+        username = data['username'],
+        first_name = data['firstname'],
+        last_name = data['lastname'],
+        email = data['email'],
+        password = data['password'],
+        is_staff = True
+    )
+
+    user.save()
+
+    user = User.objects.get(username=data['username'])
+
+    organiser = Organisation.objects.create(
+        organization_host_id = user,
+        organization_name = data['organisationName']
+    )
+
+    organiser.save()
+
+    return Response({"success": "Organiser Created successfully"})
+
