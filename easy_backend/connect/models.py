@@ -23,8 +23,8 @@ class Event(models.Model):
     restricted_participants = models.IntegerField(null=True, blank=True)
     isPaid = models.BooleanField(default=False)
     video_link = models.CharField(max_length=255, null=True, blank=True)
-    ticket_price = models.DecimalField(decimal_places=2, max_digits=7)
-    restricted_ticket_price = models.DecimalField(decimal_places=2, max_digits=7)
+    ticket_price = models.IntegerField(null=True, blank=True)
+    restricted_ticket_price = models.IntegerField(null=True, blank=True)
     registration_link = models.CharField(max_length=250, null=True, blank=True)
     event_topic = models.CharField(max_length=250, null=True, blank=True)
     organisation = models.ForeignKey(Organisation, on_delete=models.DO_NOTHING)
@@ -48,7 +48,7 @@ class Payment(models.Model):
     user = models.ForeignKey(EndUser, on_delete=models.CASCADE, null=True, blank=True)
     amount = models.IntegerField(null=True, blank=True)
     status = models.BooleanField(default=False)
-    transaction_id = models.CharField(null=True, blank=True)
+    transaction_id = models.CharField(max_length=255, null=True, blank=True)
 
 class AllowedParticipants(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, null=True, blank=True)
@@ -68,16 +68,16 @@ class Feedback(models.Model):
 
 
 class Answer(models.Model):
-    answer = models.CharField(null=True, blank=True)
+    answer = models.CharField(max_length=255, null=True, blank=True)
     isAnswer = models.BooleanField(default=False)
 
 class Question(models.Model):
-    question = models.CharField(null=True, blank=True)
+    question = models.CharField(max_length=255, null=True, blank=True)
     answer = models.ManyToManyField(Answer, null=True, blank=True)
 
 class Quiz(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, null=True, blank=True)
-    user = models.ManyToManyField(EndUser, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ManyToManyField(EndUser, null=True, blank=True)
     organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE, null=True, blank=True)
     question = models.ManyToManyField(Question, null=True, blank=True)
 

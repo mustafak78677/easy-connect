@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.shortcuts import render
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -6,7 +7,7 @@ from .models import *
 from django.contrib.auth.models import User
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
+import datetime
 
 # Create your views here.
 
@@ -89,3 +90,34 @@ def organiserregister(request):
 
     return Response({"success": "Organiser Created successfully"})
 
+
+@api_view(['POST'])
+def createEvent(request):
+    today = timezone.now()
+    data = request.POST
+    
+    if Organisation.objects.filter(organization_host_id__pk=data['organization_host_id']).exists():
+        organisation = Organisation.objects.get(organization_host_id__pk=data['organization_host_id'])
+    else:
+        return Response({'error': 'Your not logged from organisation account.'})
+    # print(organisation.organisation_name)   
+    if data['event_date'] <= str(today):
+        return Response({'error': 'Please enter valid date'})
+
+    event = Event.objects.create(
+        event_name = data['event_name'],
+        event_date = data['event_date'],
+        event_venue = data['event_venue'],
+        max_participants = data['max_participants'],
+        restricted_participants = data['restricted_participants'],
+        ticket_price = data['ticket_price'],
+        restricted_ticket_price = data['restricted_ticket_price'],
+        registration_link = data['registration_link'],
+        event_topic = data['event_topic'],
+        organisation = organisation
+    )
+    # event.save()
+
+    return Response({'success': 'Event created successfull'})
+
+    
