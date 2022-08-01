@@ -1,6 +1,5 @@
 ;
 (function ($) {
-	console.log('reaching here');
 	$.fn.loading = function () {
 		var DEFAULTS = {
 			backgroundColor: '#b3cef6',

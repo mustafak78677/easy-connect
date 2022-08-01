@@ -1,9 +1,7 @@
 import axios from 'axios'
 import React, { useState } from 'react'
 import { Button, Form, FormGroup } from 'react-bootstrap'
-import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { USER_LOGIN_SUCCESS } from '../constants/UserConstants'
 
 function EndUserRegistration() {
     const [username, setUsername] = useState('')
@@ -32,7 +30,6 @@ function EndUserRegistration() {
             }
     
             const result = await axios.post('/api/register/', {data}, config )
-            console.log(result);
             if(result.data.error){
                 setMessage(result.data.error)
             } else {
@@ -46,45 +43,98 @@ function EndUserRegistration() {
     }
 
     return (
-        <Form className="form-horizontal" onSubmit={onSubmit}>
-            <FormGroup>
-                <Form.Label>Username:</Form.Label>
-                <Form.Control placeholder="Enter Username" 
-                    value={username} onChange={e=>setUsername(e.target.value)} />
-            </FormGroup>
-            <FormGroup>
-                <Form.Label>First Name:</Form.Label>
-                <Form.Control placeholder="Enter First Name" 
-                    value={firstName} onChange={e=>setFirstName(e.target.value)} />
-            </FormGroup>
-            <FormGroup>
-                <Form.Label>Last Name:</Form.Label>
-                <Form.Control placeholder="Enter Last Name" 
-                    value={lastName} onChange={e=>setLastName(e.target.value)} />
-            </FormGroup>
-            <FormGroup>
-                <Form.Label>Email:</Form.Label>
-                <Form.Control placeholder="Enter Email" 
-                    value={email} onChange={e=>setEmail(e.target.value)} />
-            </FormGroup>
-            <FormGroup className='my-3'>
-                <Form.Label>Password:</Form.Label>
-                <Form.Control type="password" placeholder="Enter Password" value={password} 
-                    onChange={e=>setPassword(e.target.value)} />
-            </FormGroup>
-            <FormGroup className='my-3'>
-                <Form.Label>Confirm Password:</Form.Label>
-                <Form.Control type="password" placeholder="Confirm Password" value={confirmPassword} 
-                    onChange={e=>setConfirmPassword(e.target.value)} />
-            </FormGroup>
-            <FormGroup className='my-3'>
-                <Form.Label>DOB:</Form.Label>
-                <Form.Control type="date" placeholder="Enter Date Of Birth" value={dob} 
-                    onChange={e=>setDob(e.target.value)} />
-            </FormGroup>
-            <Button type="submit" className="btn btn-primary btn-block my-3">Login</Button>
-            <p style={{color: 'red'}}>{message}</p>
-        </Form>
+        // <Form className="form-horizontal" onSubmit={onSubmit}>
+        //     <FormGroup>
+        //         <Form.Label>Username:</Form.Label>
+        //         <Form.Control placeholder="Enter Username" 
+        //             value={username} onChange={e=>setUsername(e.target.value)} />
+        //     </FormGroup>
+        //     <FormGroup>
+        //         <Form.Label>First Name:</Form.Label>
+        //         <Form.Control placeholder="Enter First Name" 
+        //             value={firstName} onChange={e=>setFirstName(e.target.value)} />
+        //     </FormGroup>
+        //     <FormGroup>
+        //         <Form.Label>Last Name:</Form.Label>
+        //         <Form.Control placeholder="Enter Last Name" 
+        //             value={lastName} onChange={e=>setLastName(e.target.value)} />
+        //     </FormGroup>
+        //     <FormGroup>
+        //         <Form.Label>Email:</Form.Label>
+        //         <Form.Control placeholder="Enter Email" 
+        //             value={email} onChange={e=>setEmail(e.target.value)} />
+        //     </FormGroup>
+        //     <FormGroup className='my-3'>
+        //         <Form.Label>Password:</Form.Label>
+        //         <Form.Control type="password" placeholder="Enter Password" value={password} 
+        //             onChange={e=>setPassword(e.target.value)} />
+        //     </FormGroup>
+        //     <FormGroup className='my-3'>
+        //         <Form.Label>Confirm Password:</Form.Label>
+        //         <Form.Control type="password" placeholder="Confirm Password" value={confirmPassword} 
+        //             onChange={e=>setConfirmPassword(e.target.value)} />
+        //     </FormGroup>
+        //     <FormGroup className='my-3'>
+        //         <Form.Label>DOB:</Form.Label>
+        //         <Form.Control type="date" placeholder="Enter Date Of Birth" value={dob} 
+        //             onChange={e=>setDob(e.target.value)} />
+        //     </FormGroup>
+        //     <Button type="submit" className="btn btn-primary btn-block my-3">Login</Button>
+        //     <p style={{color: 'red'}}>{message}</p>
+        // </Form>
+
+        <>
+            <div className="sidenav">
+                <div className="login-main-text">
+                <h2>Easy Connect<br /> Participant Register Page</h2>
+                </div>
+            </div>
+            <div className="main">
+                <div className="col-md-6 col-sm-12">
+                <div className="participant-form">
+                    <Form onSubmit={onSubmit} className='participant_register'>
+                        <FormGroup>
+                            <Form.Label>Username:</Form.Label>
+                            <Form.Control placeholder="Enter Username" 
+                                        value={username} onChange={e=>setUsername(e.target.value)} />
+                        </FormGroup>
+                        <FormGroup>
+                            <Form.Label>First Name:</Form.Label>
+                            <Form.Control placeholder="Enter First Name" 
+                                value={firstName} onChange={e=>setFirstName(e.target.value)} />
+                        </FormGroup>
+                        <FormGroup>
+                            <Form.Label>Last Name:</Form.Label>
+                            <Form.Control placeholder="Enter Last Name" 
+                                value={lastName} onChange={e=>setLastName(e.target.value)} />
+                        </FormGroup>
+                        <FormGroup>
+                            <Form.Label>Email:</Form.Label>
+                            <Form.Control placeholder="Enter Email" 
+                                value={email} onChange={e=>setEmail(e.target.value)} />
+                        </FormGroup>
+                        <FormGroup className='my-3'>
+                            <Form.Label>Password:</Form.Label>
+                            <Form.Control type="password" placeholder="Enter Password" value={password} 
+                                onChange={e=>setPassword(e.target.value)} />
+                        </FormGroup>
+                        <FormGroup className='my-3'>
+                            <Form.Label>Confirm Password:</Form.Label>
+                            <Form.Control type="password" placeholder="Confirm Password" value={confirmPassword} 
+                                onChange={e=>setConfirmPassword(e.target.value)} />
+                        </FormGroup>
+                        <FormGroup className='my-3'>
+                            <Form.Label>DOB:</Form.Label>
+                            <Form.Control type="date" placeholder="Enter Date Of Birth" value={dob} 
+                                onChange={e=>setDob(e.target.value)} />
+                        </FormGroup>
+                        <Button type="submit" className="btn btn-secondary">Register</Button>
+                        <p className='text-danger mt-2'>{message}</p>
+                    </Form>
+                </div>
+                </div>
+            </div>
+        </>
     )
 }
 

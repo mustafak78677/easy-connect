@@ -8,6 +8,8 @@ from django.contrib.auth.models import User
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import datetime
+import string
+import random
 
 # Create your views here.
 
@@ -19,7 +21,6 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         for k,v in serializer.items():
             data[k] = v
 
-        print(data)
         return data
 
 class MyTokenObtainPairView(TokenObtainPairView):
@@ -28,7 +29,6 @@ class MyTokenObtainPairView(TokenObtainPairView):
 @api_view(['POST'])
 def enduserregister(request):
     data = request.data['data']
-    print(data)
     if User.objects.filter(username=data['username']).exists():
         print('user exists')
         return Response({'error': 'Username already exists'})
@@ -94,8 +94,8 @@ def organiserregister(request):
 @api_view(['POST'])
 def createEvent(request):
     today = timezone.now()
-    data = request.POST
-    
+    data = request.data['data']
+    print(data)
     if Organisation.objects.filter(organization_host_id__pk=data['organization_host_id']).exists():
         organisation = Organisation.objects.get(organization_host_id__pk=data['organization_host_id'])
     else:
@@ -103,6 +103,12 @@ def createEvent(request):
     # print(organisation.organisation_name)   
     if data['event_date'] <= str(today):
         return Response({'error': 'Please enter valid date'})
+
+            
+    S = 10  # number of characters in the string.   
+    ran = ''.join(random.choices(string.ascii_uppercase + string.digits, k = S))    
+
+    registration_link = str(ran)
 
     event = Event.objects.create(
         event_name = data['event_name'],
@@ -112,8 +118,9 @@ def createEvent(request):
         restricted_participants = data['restricted_participants'],
         ticket_price = data['ticket_price'],
         restricted_ticket_price = data['restricted_ticket_price'],
-        registration_link = data['registration_link'],
+        registration_link = registration_link,
         event_topic = data['event_topic'],
+        public = data['isPublic'],
         organisation = organisation
     )
     # event.save()
