@@ -1,3 +1,4 @@
+from math import fabs
 from django.utils import timezone
 from django.shortcuts import render
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -126,5 +127,29 @@ def createEvent(request):
     # event.save()
 
     return Response({'success': 'Event created successfull'})
+
+@api_view(['POST'])
+def my_event(request):
+    data = request.data['data']
+    if Organisation.objects.filter(organization_host_id__id=data['id']).exists():
+        if Event.objects.filter(organisation__organization_host_id__id=data['id']).exists():
+            event = Event.objects.filter(organisation__organization_host_id__id=data['id'])
+            event_serializer = EventSerializer(event, many=True).data
+            return Response(event_serializer)
+        else:
+            return Response({'error': 'No Event Exists of this Organisation'})
+    else:
+        return Response({'error': 'You are not logged in as Organisation'})
+
+@api_view(['POST'])
+def event_detail(request):
+    data = request.data['data']
+    if Event.objects.filter(id=data['id']).exists():
+        event = Event.objects.get(id=data['id'])
+        event_serializer = EventSerializer(event, many=False).data
+        return Response(event_serializer)
+    else:
+        return Response({'error': 'Sorry couldn\'t get the event, Please try again'})
+
 
     

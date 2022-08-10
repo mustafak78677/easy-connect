@@ -96,3 +96,15 @@ code {
 form > div {
   margin-bottom: 15px;
 }
+
+.event-edit-form {
+  margin-top: 100px;
+}
+
+.event-edit-form input.form-control, .event-edit-form input.form-check-input, .event-edit-form .form--control {
+  margin-top: 5px!important;
+}
+
+.event-edit-form .col-lg-6 {
+  margin-top: 15px!important;
+}
