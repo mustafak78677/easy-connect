@@ -14,7 +14,8 @@ function Header({isStaff, userInfo}) {
         }
     },[navigate, userInfo])
     
-    const logout = () => {
+    const logout = (e) => {
+        e.preventDefault()
         dispatch(userLogOut())
         navigate('/login')
     }
@@ -53,7 +54,7 @@ function Header({isStaff, userInfo}) {
                                                         </ul>
                                                     </li>
                                                     <li><a href="#0">About</a></li>
-                                                    <li><a href="#0">Spakers</a></li>
+                                                    <li><a href="#0">Speakers</a></li>
                                                     <li><a href="#0">How it Work</a></li>
                                                     {/* <li><a className="has-child" href="#0">Blogs</a>
                                                         <ul className="submenu">

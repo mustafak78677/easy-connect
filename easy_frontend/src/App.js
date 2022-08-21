@@ -8,6 +8,7 @@ import Header from './components/Header'
 import { useSelector } from 'react-redux';
 import MyEvents from './screens/MyEvents';
 import EventDetails from './screens/EventDetails';
+import UserEventRegister from './screens/UserEventRegister';
 
 function App() {
     let isStaff = false
@@ -32,6 +33,7 @@ function App() {
                 <Route path='/createevent' element={<CreateEvent />}></Route>
                 <Route path='/myevents' element={<MyEvents userInfo={userInfo} />}></Route>
                 <Route path='/my-event/:id' element={<EventDetails />}></Route>
+                <Route path='/:url' element={<UserEventRegister />}></Route>
             </Routes>
         </Router>
     );

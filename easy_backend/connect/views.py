@@ -151,5 +151,30 @@ def event_detail(request):
     else:
         return Response({'error': 'Sorry couldn\'t get the event, Please try again'})
 
+@api_view(['POST'])
+def user_event_register(request):
+    data = request.data['data']
+    if Event.objects.filter(registration_link=data['url']).exists():
+        event = Event.objects.get(registration_link=data['url'])
+        event_serializer = EventSerializer(event, many=False).data
+        return Response(event_serializer)
+    else:
+        return Response({'error': 'Sorry, Either the registration date of event has expired or no such event exists'})
+
+@api_view(['POST'])
+def event_register(request):
+    data = request.data['data']
+    if Event.objects.filter(id=data['event_id']).exists():
+        print(data['user_id'])
+        event = Event.objects.get(id=data['event_id'])
+        user = EndUser.objects.get(user_id__id=data['user_id'])
+        user.upcoming_events_id.add(event)
+        user.save()
+        event.max_participants = event.max_participants - 1
+        event.save()
+        return Response({'success': 'Successfully Registered for event'})
+    else:
+        return Response({'error': "Sorry couldn't register, Please try again"})
+
 
     

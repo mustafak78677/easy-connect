@@ -22,12 +22,14 @@ function MyEvents({userInfo}) {
     useEffect(()=>{
         get_events()
     },[])
+    console.log(event);
     
     return (
-        <div className='banner-area-three'>
+        <div className=''>
             <div className="row mt-4 mt-lg-5">
                 
-            {event.map(item=> {
+            {event.error ? <div className='col-lg-12 mt-5 text-center'>{event.error}</div>
+            : event.map(item=> {
                 return (
                     <div className="col-lg-4 col-mg-6 mt-4 wow slideInUp" data-wow-delay=".2s" key={item.id}>
                         <div className="single-tickets-three">

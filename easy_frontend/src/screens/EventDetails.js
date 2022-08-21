@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import {Row, Col, Form, FormGroup} from 'react-bootstrap'
+import { base_url } from '../config'
 
 function EventDetails() {
     const [eventName, setEventName] = useState('')
@@ -106,7 +107,7 @@ function EventDetails() {
                     <Col lg={6} sm={6}>
                         <FormGroup>
                             <Form.Label>Registration Link</Form.Label>
-                            <Form.Control className="form--control" name="reglink" placeholder="Registration Link" value={registrationLink} onChange={e=>setRegistrationLink(e.target.value)} />
+                            <Form.Control className="form--control" name="reglink" placeholder="Registration Link" value={base_url + registrationLink} onChange={e=>setRegistrationLink(e.target.value)} />
                         </FormGroup>
                     </Col>
                     <Col lg={6} sm={6}>

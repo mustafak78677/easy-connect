@@ -37,8 +37,8 @@ class Event(models.Model):
 class EndUser(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     DOB = models.DateField(null=True, blank=True)
-    event_participated_id = models.ManyToManyField(Event, related_name="event_participated")
-    upcoming_events_id = models.ManyToManyField(Event, related_name="upcoming_events")
+    event_participated_id = models.ManyToManyField(Event, related_name="event_participated", null=True, blank=True)
+    upcoming_events_id = models.ManyToManyField(Event, related_name="upcoming_events", null=True, blank=True)
 
     def __str__(self):
         return self.user_id.username
