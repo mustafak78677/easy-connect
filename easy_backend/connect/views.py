@@ -8,6 +8,7 @@ from .models import *
 from django.contrib.auth.models import User
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.db.models import Q
 import datetime
 import string
 import random
@@ -141,6 +142,34 @@ def my_event(request):
     else:
         return Response({'error': 'You are not logged in as Organisation'})
 
+# sam available events
+@api_view(['POST'])
+def available_events(request):
+    data = request.data['data']
+    # print(data)
+    if EndUser.objects.filter(user_id__id = data['id']).exists():
+        endUser = EndUser.objects.get(user_id__id = data['id'])
+        upcomingEvent = endUser.upcoming_events_id.all()
+        if Event.objects.filter(~Q(id__in = upcomingEvent), public=True).exists():
+            publicEvents = Event.objects.filter(~Q(id__in = upcomingEvent), public=True)
+            event_serializer = EventSerializer(publicEvents, many=True).data
+            return Response(event_serializer)
+        
+        else: 
+            return Response({'error': 'Public Events are not available'})
+    else:
+        return Response({'error': 'Your not logged in as participant'})
+    # if Organisation.objects.filter(organization_host_id__id=data['id']).exists():
+    #     if Event.objects.filter(organisation__organization_host_id__id=data['id']).exists():
+    #         event = Event.objects.filter(organisation__organization_host_id__id=data['id'])
+    #         event_serializer = EventSerializer(event, many=True).data
+    #         return Response(event_serializer)
+    #     else:
+    #         return Response({'error': 'No Event Exists of this Organisation'})
+    # else:
+    #     return Response({'error': 'You are not logged in as Organisation'})
+
+
 @api_view(['POST'])
 def event_detail(request):
     data = request.data['data']
@@ -165,7 +194,7 @@ def user_event_register(request):
 def event_register(request):
     data = request.data['data']
     if Event.objects.filter(id=data['event_id']).exists():
-        print(data['user_id'])
+        # print(data['user_id'])
         event = Event.objects.get(id=data['event_id'])
         user = EndUser.objects.get(user_id__id=data['user_id'])
         user.upcoming_events_id.add(event)
@@ -178,3 +207,19 @@ def event_register(request):
 
 
     
+@api_view(['POST'])
+def end_user_events(request):
+    data = request.data['data']
+    print('test: ',data)
+    if EndUser.objects.filter(user_id__id = data['id']).exists():
+        endUser = EndUser.objects.get(user_id__id = data['id'])
+        participated_events = endUser.upcoming_events_id.all()
+        if Event.objects.filter(id__in = participated_events).exists():
+            publicEvents = Event.objects.filter(id__in = participated_events)
+            event_serializer = EventSerializer(publicEvents, many=True).data
+            return Response(event_serializer)
+        
+        else: 
+            return Response({'error': 'Public Events are not available'})
+    else:
+        return Response({'error': 'Your not logged in as participant'})

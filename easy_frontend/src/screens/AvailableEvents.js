@@ -1,11 +1,14 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-function MyEvents({ userInfo }) {
+function MyEvents() {
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
   const [event, setEvent] = useState([]);
 
-  function get_events() {
+  function get_available_events() {
     const config = {
       headers: {
         "content-type": "application/json",
@@ -13,28 +16,17 @@ function MyEvents({ userInfo }) {
     };
 
     const data = { id: userInfo.id };
-    // console.log(data);
-    const is_staff = { is_staff: userInfo.is_staff };
-    // console.log(is_staff);
-    if (is_staff.is_staff) {
-      axios
-        .post("/api/my_events/", { data }, config)
-        .then((response) => {
-          setEvent(response.data);
-        })
-        .catch(console.error("error"));
-    } else {
-      axios
-        .post("/api/end_user_events/", { data }, config)
-        .then((response) => {
-          setEvent(response.data);
-        })
-        .catch(console.error("error"));
-    }
+    axios
+      .post("/api/available_events/", { data }, config)
+      .then((response) => {
+        // console.log(response.data);
+        setEvent(response.data);
+      })
+      .catch(console.error("error"));
   }
 
   useEffect(() => {
-    get_events();
+    get_available_events();
   }, []);
   console.log(event);
 
@@ -79,7 +71,7 @@ function MyEvents({ userInfo }) {
                       <sub>Rs.</sub> {item.ticket_price}{" "}
                     </h2>
                   </div>
-                  <Link
+                  {/* <Link
                     to={`/my-event/${item.id}`}
                     className="btn--custom btn--three no-radius mr-5"
                   >
@@ -92,6 +84,13 @@ function MyEvents({ userInfo }) {
                   >
                     {" "}
                     Delete{" "}
+                  </Link> */}
+                  <Link
+                    to={`/${item.registration_link}`}
+                    className="btn--custom btn--three no-radius mr-5"
+                  >
+                    {" "}
+                    Buy Ticket{" "}
                   </Link>
                 </div>
               </div>
