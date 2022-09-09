@@ -15,6 +15,7 @@ import MyEvents from "./screens/MyEvents";
 import EventDetails from "./screens/EventDetails";
 import UserEventRegister from "./screens/UserEventRegister";
 import AvailableEvents from "./screens/AvailableEvents";
+import Streaming from "./screens/Streaming";
 
 function App() {
   let isStaff = false;
@@ -46,6 +47,7 @@ function App() {
         <Route path="/availableevents" element={<AvailableEvents />}></Route>
         <Route path="/my-event/:id" element={<EventDetails />}></Route>
         <Route path="/:url" element={<UserEventRegister />}></Route>
+        <Route path="/streaming/:url" element={<Streaming />}></Route>
       </Routes>
     </Router>
   );

@@ -108,3 +108,19 @@ form > div {
 .event-edit-form .col-lg-6 {
   margin-top: 15px!important;
 }
+
+.streaming{
+  height:80vh;
+  width: 100%;
+  position:relative;
+  overflow:hidden;
+}
+.streaming iframe{
+  position:absolute;
+  top:90%;
+  transform:translateY(-90%);
+  left:0;
+  pointer-events:none;
+  width:100%;
+  height:100vh;
+}

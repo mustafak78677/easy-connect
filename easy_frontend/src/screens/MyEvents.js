@@ -47,7 +47,8 @@ function MyEvents({ userInfo }) {
           event.map((item) => {
             return (
               <div
-                className="col-lg-4 col-mg-6 mt-4 wow slideInUp"
+            
+              className="col-lg-4 col-mg-6 mt-4 wow slideInUp"
                 data-wow-delay=".2s"
                 key={item.id}
               >
@@ -79,20 +80,29 @@ function MyEvents({ userInfo }) {
                       <sub>Rs.</sub> {item.ticket_price}{" "}
                     </h2>
                   </div>
-                  <Link
-                    to={`/my-event/${item.id}`}
-                    className="btn--custom btn--three no-radius mr-5"
-                  >
-                    {" "}
-                    Edit{" "}
-                  </Link>
-                  <Link
-                    to={`/delete-event/${item.id}`}
-                    className="btn--custom btn--three no-radius mr-5"
-                  >
-                    {" "}
-                    Delete{" "}
-                  </Link>
+                  {userInfo.is_staff ? (
+                    <>
+                      <Link to={`/my-event/${item.id}`}
+                        className="btn--custom btn--three no-radius mr-5"
+                      >
+                        Edit
+                      </Link>
+                      <Link
+                        to={`/delete-event/${item.id}`}
+                        className="btn--custom btn--three no-radius mr-5"
+                      >
+                        Delete
+                      </Link>
+                    </>
+                  ) : (
+                    <Link
+                      to={`/streaming/${item.registration_link}`}
+                      className="btn--custom btn--three no-radius mr-5"
+                    >
+                      Visit Event
+                    </Link>
+                  )}
+                  
                 </div>
               </div>
             );
