@@ -12,4 +12,5 @@ urlpatterns = [
     path('user-event-register/', user_event_register, name="user_event_register"),
     path('event-register/', event_register, name="event_register"),
     path('end_user_events/', end_user_events, name="end_user_events"),
+    path('streaming/', streaming, name="streaming"),
 ]

@@ -210,7 +210,6 @@ def event_register(request):
 @api_view(['POST'])
 def end_user_events(request):
     data = request.data['data']
-    print('test: ',data)
     if EndUser.objects.filter(user_id__id = data['id']).exists():
         endUser = EndUser.objects.get(user_id__id = data['id'])
         participated_events = endUser.upcoming_events_id.all()
@@ -223,3 +222,11 @@ def end_user_events(request):
             return Response({'error': 'Public Events are not available'})
     else:
         return Response({'error': 'Your not logged in as participant'})
+
+@api_view(['POST'])
+def streaming(request):
+    data = request.data['data']
+    if Event.objects.filter(registration_link=data['url']).exists():
+        event = Event.objects.get(registration_link=data['url'])
+        event_serializer = EventSerializer(event, many=False).data
+        return Response(event_serializer)
