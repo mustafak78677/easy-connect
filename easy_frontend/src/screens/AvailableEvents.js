@@ -68,7 +68,7 @@ function MyEvents() {
                     </div>
                     <h2 className="tickets-price">
                       {" "}
-                      <sub>Rs.</sub> {item.ticket_price}{" "}
+                      <sub>Starting with Rs.</sub> {item.ticket_price}{" "}
                     </h2>
                   </div>
                   {/* <Link

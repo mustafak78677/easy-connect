@@ -183,7 +183,11 @@ def event_detail(request):
 @api_view(['POST'])
 def user_event_register(request):
     data = request.data['data']
-    if Event.objects.filter(registration_link=data['url']).exists():
+    end_user = EndUser.objects.get(user_id__id = data['id'])
+    upcoming_event_id = end_user.upcoming_events_id.all()
+
+    
+    if Event.objects.filter(~Q(id__in = upcoming_event_id),registration_link=data['url']).exists():
         event = Event.objects.get(registration_link=data['url'])
         event_serializer = EventSerializer(event, many=False).data
         return Response(event_serializer)
@@ -199,7 +203,10 @@ def event_register(request):
         user = EndUser.objects.get(user_id__id=data['user_id'])
         user.upcoming_events_id.add(event)
         user.save()
-        event.max_participants = event.max_participants - 1
+        if data['type'] == "online":
+            event.max_participants = event.max_participants - 1
+        elif data['type'] == "offline":
+            event.restricted_participants = event.restricted_participants - 1
         event.save()
         return Response({'success': 'Successfully Registered for event'})
     else:
