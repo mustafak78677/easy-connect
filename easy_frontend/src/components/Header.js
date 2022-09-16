@@ -7,11 +7,11 @@ function Header({ isStaff, userInfo }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!userInfo) {
-      navigate("/login");
-    }
-  }, [navigate, userInfo]);
+  // useEffect(() => {
+  //   if (!userInfo) {
+  //     navigate("/login");
+  //   }
+  // }, [navigate, userInfo]);
 
   const logout = (e) => {
     e.preventDefault();
