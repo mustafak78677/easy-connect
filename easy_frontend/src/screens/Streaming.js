@@ -50,7 +50,7 @@ function Streaming() {
         <Col lg={12}>
           {streaming && streaming.video_link ? (
             <iframe
-              src={`https://www.youtube.com/embed/${streaming.video_link}?autoplay=1&mute=1&loop=1&color=white&controls=0&modestbranding=1&playsinline=1&rel=0&enablejsapi=1&playlist=${streaming.video_link}`}
+              src={`https://www.youtube.com/embed/${streaming.video_link}?autoplay=1&mute=2&loop=1&color=white&controls=0&modestbranding=1&playsinline=1&rel=0&enablejsapi=1&playlist=${streaming.video_link}`}
               title="YouTube video player"
               frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
