@@ -59,7 +59,7 @@ function Login() {
                         <Form.Control type="password" className="form-control" placeholder="Password" value={password} onChange={e=>setPassword(e.target.value)} />
                     </FormGroup>
                     <Button type="submit" className="btn btn-black">Login</Button>
-                    <Button type="button" className="btn btn-secondary">Register</Button>
+                    <Button href="/register" type="button" className="btn btn-secondary">Register</Button>
                 </Form>
             </div>
             </div>

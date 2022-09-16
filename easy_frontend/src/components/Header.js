@@ -8,7 +8,6 @@ function Header({ isStaff, userInfo }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(userInfo);
     if (!userInfo) {
       navigate("/login");
     }

@@ -1,13 +1,18 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
-import { useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
 
-function Streaming() {
+function Streaming({onUserEnter, onUserExit}) {
     const {url} = useParams()
     const [streaming, setStreaming] = useState()
+    const [attendance, setAttendance] = useState()
+    const userLogin = useSelector(state=>state.userLogin)
+    const {userInfo} = userLogin
+    const navigate = useNavigate()
 
-    function get_event(){
+    const get_event = async() => {
         const config = {
             headers: {
                 'content-type': 'application/json'
@@ -16,14 +21,20 @@ function Streaming() {
 
         const data = {'url': url}
 
-        axios.post('/api/streaming/', {data}, config).then(res=>{
-            console.log(res.data)
+        await axios.post('/api/streaming/', {data}, config).then(res=>{
             setStreaming(res.data)
-        }).catch(err=>console.error(err))
+            onUserEnter(res.data.id)
+        }).catch(err=>console.error(err.message))
     }
 
+
+
     useEffect(()=>{
-        get_event()
+        if (!userInfo) {
+            navigate("/login");
+        }
+        setAttendance(get_event())
+        window.addEventListener('beforeunload', onUserExit)
     },[])
 
     return (

@@ -23,3 +23,8 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = '__all__'
+
+class ParticipantAttendanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ParticipantAttendance
+        fields = '__all__'

@@ -16,11 +16,46 @@ import EventDetails from "./screens/EventDetails";
 import UserEventRegister from "./screens/UserEventRegister";
 import AvailableEvents from "./screens/AvailableEvents";
 import Streaming from "./screens/Streaming";
+import { useState } from "react";
+import axios from "axios";
 
 function App() {
   let isStaff = false;
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+
+  const OnUserEnter = async(streaming_id) => {
+    console.log('enter 2');
+    const config = {
+        headers: {
+            'content-type': 'application/json'
+        }
+    }
+
+    const data = {'type': 'entering', 'user_id': userInfo.id, 'event_id': streaming_id}
+
+    await axios.post('/api/participant-attendance/', {data}, config).then(res=>{
+        console.log(res.data);
+        localStorage.setItem('attendance_id', res.data.id)
+    })
+  }
+
+  const OnUserExit = async() => {
+    console.log('leave');
+    const config = {
+        headers: {
+            'content-type': 'application/json'
+        }
+    }
+    const attendance_id = localStorage.getItem('attendance_id')
+
+    const data = {'type': 'leaving', 'attendance_id': attendance_id}
+
+    await axios.post('/api/participant-attendance/', {data}, config).then(res=>{
+        console.log(res.data);
+        localStorage.removeItem('attendance_id')
+    })
+  }
 
   if (userInfo) {
     if (userInfo.is_staff) {
@@ -47,7 +82,7 @@ function App() {
         <Route path="/availableevents" element={<AvailableEvents />}></Route>
         <Route path="/my-event/:id" element={<EventDetails />}></Route>
         <Route path="/:url" element={<UserEventRegister />}></Route>
-        <Route path="/streaming/:url" element={<Streaming />}></Route>
+        <Route path="/streaming/:url" element={<Streaming onUserEnter={OnUserEnter} onUserExit={OnUserExit} />}></Route>
       </Routes>
     </Router>
   );

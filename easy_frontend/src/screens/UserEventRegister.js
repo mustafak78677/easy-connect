@@ -2,7 +2,7 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Card, Col, Container, Form, Row } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 function UserEventRegister() {
     const {url} = useParams()
@@ -11,6 +11,7 @@ function UserEventRegister() {
     const {userInfo} = userLogin
     const [user] = useState(userInfo.is_staff ? false : true)
     const [event, setEvent] = useState('')
+    const navigate = useNavigate()
     
 
     function get_event(){
@@ -23,14 +24,17 @@ function UserEventRegister() {
         const data = {'url': url}
 
         axios.post('/api/user-event-register/', {data}, config).then(res=>{
-            console.log(res.data)
             setEvent(res.data)
         }).catch(err=>console.error(err))
     }
 
     useEffect(()=>{
+        if (!userInfo) {
+            navigate("/login");
+        }
         get_event()
     },[])
+
 
     const registerEvent = (e) => {
         e.preventDefault()
@@ -42,7 +46,6 @@ function UserEventRegister() {
 
         const data = {'event_id': event.id, 'user_id': userInfo.id}
         axios.post('/api/event-register/', {data}, config).then(res=>{
-            console.log(res.data);
         }).catch(err=>console.error(err))
     }
     return (
