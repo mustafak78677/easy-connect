@@ -1,12 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function MyEvents() {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   const [event, setEvent] = useState([]);
+  const navigate = useNavigate();
 
   function get_available_events() {
     const config = {
@@ -26,6 +27,9 @@ function MyEvents() {
   }
 
   useEffect(() => {
+    if (!userInfo) {
+      navigate("/login");
+    }
     get_available_events();
   }, []);
   console.log(event);

@@ -1,9 +1,11 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 function MyEvents({ userInfo }) {
   const [event, setEvent] = useState([]);
+  const navigate = useNavigate()
+  const location = useLocation()
 
   function get_events() {
     const config = {
@@ -34,9 +36,13 @@ function MyEvents({ userInfo }) {
   }
 
   useEffect(() => {
+    if (!userInfo) {
+      navigate("/login");
+    }
     get_events();
   }, []);
-  console.log(event);
+
+  
 
   return (
     <div className="">

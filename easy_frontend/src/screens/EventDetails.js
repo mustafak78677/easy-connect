@@ -1,8 +1,9 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import {Row, Col, Form, FormGroup} from 'react-bootstrap'
 import { base_url } from '../config'
+import { useSelector } from 'react-redux'
 
 function EventDetails() {
     const [eventName, setEventName] = useState('')
@@ -18,6 +19,10 @@ function EventDetails() {
     const [eventTopic, setEventTopic] = useState('')
     const [isPublic, setIsPublic] = useState('')
     const {id} = useParams()
+    const userLogin = useSelector(state=>state.userLogin)
+    const {userInfo} = userLogin
+    const navigate = useNavigate()
+
     function get_event(){
         const config = {
             headers: {
@@ -44,6 +49,9 @@ function EventDetails() {
     }
 
     useEffect(()=>{
+        if (!userInfo) {
+            navigate("/login");
+        }
         get_event()
     }, [])
     return (

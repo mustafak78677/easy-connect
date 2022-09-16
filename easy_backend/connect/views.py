@@ -237,3 +237,26 @@ def streaming(request):
         event = Event.objects.get(registration_link=data['url'])
         event_serializer = EventSerializer(event, many=False).data
         return Response(event_serializer)
+
+@api_view(['POST'])
+def participantattendance(request):
+    data = request.data['data']
+    if data['type'] == 'entering':
+        user = User.objects.get(id=data['user_id'])
+        participant = EndUser.objects.get(user_id=user)
+        event = Event.objects.get(id=data['event_id'])
+        attendance = ParticipantAttendance.objects.create(
+            user=participant,
+            event=event,
+            start_time = timezone.now()
+        )
+        attendance_serializer = ParticipantAttendanceSerializer(attendance, many=False).data
+        return Response(attendance_serializer)
+
+    elif data['type'] == 'leaving':
+        id = data['attendance_id']
+        attendance = ParticipantAttendance.objects.get(id=id)
+        attendance.end_time = timezone.now()
+        attendance.save()
+        return Response({'message': 'success'})
+        

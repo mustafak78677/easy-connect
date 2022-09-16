@@ -56,6 +56,7 @@ class AllowedParticipants(models.Model):
 
 
 
+
 class Feedback(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True, blank=True)
     event_id = models.ForeignKey(Event, on_delete=models.DO_NOTHING, null=True, blank=True)
@@ -89,6 +90,16 @@ class Quiz(models.Model):
 
 #     def __str__(self):
 #         return self.buid.name
+
+class ParticipantAttendance(models.Model):
+    user = models.ForeignKey(EndUser, on_delete=models.DO_NOTHING, null=True)
+    event = models.ForeignKey(Event, on_delete=models.DO_NOTHING)
+    start_time = models.DateTimeField(null=True, blank=True)
+    end_time = models.DateTimeField(null=True, blank=True)
+    
+    def __str__(self):
+        return self.user.user_id.first_name + ' - ' + self.event.event_name
+
 
 
 

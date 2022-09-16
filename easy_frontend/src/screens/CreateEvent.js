@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Button, Form, FormGroup } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 function CreateEvent() {
     const userLogin = useSelector(state=>state.userLogin)
@@ -16,10 +17,8 @@ function CreateEvent() {
     const [topic, setTopic] = useState('')
     const [isPublic, setIsPublic] = useState(false)
     const [message, setMessage] = useState('')
+    const navigate = useNavigate()
 
-    useEffect(()=>{
-        console.log(isPublic);
-    },[isPublic])
 
     const submit = async(e) => {
         setMessage('')
@@ -39,6 +38,12 @@ function CreateEvent() {
             setMessage(result.data.success)
         }
     }
+
+    useEffect(()=>{
+        if (!userInfo) {
+            navigate("/login");
+        }
+    },[])
     
     return (
         <>
