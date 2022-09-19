@@ -94,6 +94,9 @@ function OrganiserRegister() {
                 <div className="participant-form">
                 <Form className="form-horizontal" onSubmit={onSubmit}>
                     <FormGroup>
+                        <Button type="button" className='btn btn-info' href='/register'>Register as Participant</Button>
+                    </FormGroup>
+                    <FormGroup>
                         <Form.Label>Username:</Form.Label>
                         <Form.Control placeholder="Enter Username" 
                             value={username} onChange={e=>setUsername(e.target.value)} />

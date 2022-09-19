@@ -6,7 +6,8 @@ import { userLogOut } from "../actions/UserActions";
 function Header({ isStaff, userInfo }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const homePage = window.location.href === 'http://localhost:3000/' ? true :false
+  const header = userInfo || homePage
   // useEffect(() => {
   //   if (!userInfo) {
   //     navigate("/login");
@@ -21,7 +22,7 @@ function Header({ isStaff, userInfo }) {
 
   return (
     <>
-      {userInfo && (
+      {header && (
         <div>
           <div className="search-bar search-bar-three">
             <form className="menu-search-form" action="#">

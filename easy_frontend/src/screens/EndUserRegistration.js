@@ -94,6 +94,9 @@ function EndUserRegistration() {
                 <div className="participant-form">
                     <Form onSubmit={onSubmit} className='participant_register'>
                         <FormGroup>
+                            <Button type="button" className='btn btn-info' href='/organiserregister'>Register as Organiser</Button>
+                        </FormGroup>
+                        <FormGroup>
                             <Form.Label>Username:</Form.Label>
                             <Form.Control placeholder="Enter Username" 
                                         value={username} onChange={e=>setUsername(e.target.value)} />
