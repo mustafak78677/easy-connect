@@ -29,8 +29,9 @@ function MyEvents() {
   useEffect(() => {
     if (!userInfo) {
       navigate("/login");
+    } else {
+      get_available_events();
     }
-    get_available_events();
   }, []);
   console.log(event);
 

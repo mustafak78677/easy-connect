@@ -38,8 +38,9 @@ function MyEvents({ userInfo }) {
   useEffect(() => {
     if (!userInfo) {
       navigate("/login");
+    } else {
+      get_events();
     }
-    get_events();
   }, []);
 
   
