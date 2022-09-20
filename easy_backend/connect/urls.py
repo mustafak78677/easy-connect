@@ -14,4 +14,7 @@ urlpatterns = [
     path('end_user_events/', end_user_events, name="end_user_events"),
     path('streaming/', streaming, name="streaming"),
     path('participant-attendance/', participantattendance, name="participant_attendance"),
+    path('createOrder/', createOrder, name="createOrder"),
+    path('verifySignature/', verifySignature, name="verifySignature"),
+    path('event_details/', event_details, name="event_details")
 ]

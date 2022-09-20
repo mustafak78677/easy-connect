@@ -1,157 +1,95 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import {Row, Col, Form, FormGroup} from 'react-bootstrap'
-import { base_url } from '../config'
-import { useSelector } from 'react-redux'
+import { Container, Table } from 'react-bootstrap'
+import { useParams } from 'react-router-dom'
+import moment from 'moment'
 
 function EventDetails() {
-    const [eventName, setEventName] = useState('')
-    const [eventDate, setEventDate] = useState('')
-    const [eventVenue, setEventVenue] = useState('')
-    const [maxParticipants, setMaxParticipants] = useState('')
-    const [restrictedParticipants, setRestrictedParticipants] = useState('')
-    const [isPaid, setIsPaid] = useState('')
-    const [videoLink, setVideoLink] = useState('')
-    const [ticketPrice, setTicketPrice] = useState('')
-    const [restrictedTicketPrice, setRestrictedTicketPrice] = useState('')
-    const [registrationLink, setRegistrationLink] = useState('')
-    const [eventTopic, setEventTopic] = useState('')
-    const [isPublic, setIsPublic] = useState('')
     const {id} = useParams()
-    const userLogin = useSelector(state=>state.userLogin)
-    const {userInfo} = userLogin
-    const navigate = useNavigate()
+    const [event, setEvent] = useState(null)
+    const [user, setUser] = useState([])
+    const [attendance, setAttendance] = useState([])
 
-    function get_event(){
+    const get_event = async() => {
         const config = {
             headers: {
                 'content-type': 'application/json'
             }
         }
     
-        const data = {'id': id}
+        const params = {'id': id}
 
-        axios.post('/api/eventDetail/', {data}, config).then(res=>{
-            setEventName(res.data.event_name)
-            setEventDate(res.data.event_date)
-            setEventVenue(res.data.event_venue)
-            setMaxParticipants(res.data.max_participants)
-            setRestrictedParticipants(res.data.restricted_participants)
-            setIsPaid(res.data.ispaid)
-            setVideoLink(res.data.video_link)
-            setTicketPrice(res.data.ticket_price)
-            setRestrictedTicketPrice(res.data.restricted_ticket_price)
-            setRegistrationLink(res.data.registration_link)
-            setEventTopic(res.data.topic)
-            setIsPublic(res.data.public)
-        }).catch(err=>console.error(err))
+        const {data} = await axios.post('/api/event_details/', {params}, config)
+        setEvent(data.event_serializer)
+        setUser(data.user_serializer)
+        data.attendance_serializer ? setAttendance(data.attendance_serializer) : setAttendance([])
+        // Object.entries(data).map(([key, value])=>(
+        //     key === 'event_serializer' ? setEvent(value) : setUser(value)
+        // ))
+        // setEvent(data.event_serializer)
+        console.log(data);
+
     }
 
     useEffect(()=>{
-        if (!userInfo) {
-            navigate("/login");
-        }
         get_event()
-    }, [])
+    },[])
+
     return (
-        <div className='container event-edit-form'>
-            <Form className="custom-form send-form" action="#">
-                <Row className="row mt-4 mt-lg-5">
-                    <Col lg={6} sm={6}>
-                        <FormGroup>
-                            <Form.Label>Event Name</Form.Label>
-                            <Form.Control className="form--control" name="name" placeholder="Enter Event Name" value={eventName} onChange={e=>setEventName(e.target.value)} />
-                        </FormGroup>
-                    </Col>
-                    <Col lg={6} sm={6}>
-                        <FormGroup>
-                            <Form.Label>Event Topic</Form.Label>
-                            <Form.Control className="form--control" name="topic" placeholder="Enter Event Topic" value={eventTopic} onChange={e=>setEventTopic(e.target.value)} />
-                        </FormGroup>
-                    </Col>
-                    <Col lg={6} sm={6}>
-                        <FormGroup>
-                            <Form.Label>Event Date</Form.Label>
-                            <Form.Control className="form--control" type="date" name="date" placeholder="Enter Event Date" value={eventDate} onChange={e=>setEventDate(e.target.value)}/>
-                        </FormGroup>
-                    </Col>
-                    <Col lg={6} sm={6}>
-                        <FormGroup>
-                            <Form.Label>Maximum Participants</Form.Label>
-                            <Form.Control className="form--control" name="maxparticipants" placeholder="Enter Maximum Participants who can register" value={maxParticipants} onChange={e=>setMaxParticipants(e.target.value)} />
-                        </FormGroup>
-                    </Col>
-                    <Col lg={6} sm={6}>
-                        <FormGroup>
-                            <Form.Label>Restricted Participants</Form.Label>
-                            <Form.Control className="form--control" name="resparticipants" placeholder="Enter Participants who can register for offline venue if any" value={restrictedParticipants} onChange={e=>setRestrictedParticipants(e.target.value)} />
-                        </FormGroup>
-                    </Col>
-                    <Col lg={6} sm={6}>
-                        <FormGroup>
-                            <Form.Label>Is Paid?</Form.Label>
-                            <Form.Check className="form--control" name="paid" placeholder="Phone Number" value={isPaid} onChange={e=>setIsPaid(e.target.value)}/>
-                        </FormGroup>
-                    </Col>
-                    <Col lg={6} sm={6}>
-                        <FormGroup>
-                            <Form.Label>Video Link</Form.Label>
-                            <Form.Control className="form--control" name="link" placeholder="Enter Video Link" value={videoLink} onChange={e=>setVideoLink(e.target.value)} />
-                        </FormGroup>
-                    </Col>
-                    <Col lg={6} sm={6}>
-                        <FormGroup>
-                            <Form.Label>Ticket Price</Form.Label>
-                            <Form.Control className="form--control" type="text" name="ticketprice" placeholder="Enter Ticket Price" value={ticketPrice} onChange={e=>setTicketPrice(e.target.value)} />
-                        </FormGroup>
-                    </Col>
-                    <Col lg={6} sm={6}>
-                        <FormGroup>
-                            <Form.Label>Ticket Price for offline venue</Form.Label>
-                        </FormGroup>
-                        <input className="form--control" name="resticketprice" placeholder="Enter Ticket Price for offline venue if any" value={restrictedTicketPrice} onChange={e=>setRestrictedTicketPrice(e.target.value)} />
-                    </Col>
-                    <Col lg={6} sm={6}>
-                        <FormGroup>
-                            <Form.Label>Registration Link</Form.Label>
-                            <Form.Control className="form--control" name="reglink" placeholder="Registration Link" value={base_url + registrationLink} onChange={e=>setRegistrationLink(e.target.value)} />
-                        </FormGroup>
-                    </Col>
-                    <Col lg={6} sm={6}>
-                        <FormGroup>
-                            <Form.Label>Is the event open for all public?</Form.Label>
-                            <Form.Check className="form--control" name="public" placeholder="Phone Number" value={isPublic} onChange={e=>setIsPublic(e.target.value)}/>
-                        </FormGroup>
-                    </Col>
-                    <Col lg={6} sm={6}>
-                        <FormGroup>
-                            <Form.Label>Event Venue</Form.Label>
-                            <Form.Control className="form--control" name="venue" placeholder="Enter Event Venue" value={eventVenue} onChange={e=>setEventVenue(e.target.value)}/>
-                        </FormGroup>
-                    </Col>
-                    {/* <Col lg={6} sm={6}>
-                        <FormGroup>
-                            <Form.Label></Form.Label>
-                        </FormGroup>
-                        <div className="nice-selects">
-                            <select>
-                                <option value="1"> Subject </option>
-                                <option value="2"> Subject </option>
-                                <option value="3"> Subject </option>
-                                <option value="4"> Subject </option>
-                                <option value="5"> Subject </option>
-                            </select>
-                            <div className="nice-select" tabIndex="0"><span className="current"> Subject </span><ul className="list"><li data-value="1" className="option selected"> Subject </li><li data-value="2" className="option"> Subject </li><li data-value="3" className="option"> Subject </li><li data-value="4" className="option"> Subject </li><li data-value="5" className="option"> Subject </li></ul></div>
-                        </div>
-                    </Col> */}
-                </Row>
-                {/* <textarea className="form--control form--messages" name="message" placeholder="Type Your Messages" value={eventVenue} onChange={e=>setEventVenue(e.target.value)}></textarea> */}
-                <div className="send-button text-center">
-                    <button type="submit" className="btn--custom btn--one no-radius"> Submit Now </button>
+        <>
+        {event &&
+            <Container fluid className='mt-lg-5 p-0'>
+                <div className='table-responsive table-responsive--sm bg-dark'>
+                    <h3 className='mt-lg-5 text-light text-center'>Users Registered for {event.event_name} event</h3>
+                    <Table className='custom--table'>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Age</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {user && user.map(res=>(
+                                <tr key={res.id}>
+                                    <td>{res.first_name} {res.last_name}</td>
+                                    <td>{res.email}</td>
+                                    <td>{res.age}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
                 </div>
-            </Form>
-        </div>
+                {attendance.length !== 0 && 
+                    <div className='table-responsive table-responsive--sm bg-dark mt-5'>
+                        <h3 className='mt-lg-5 text-light text-center'>Attendance log for {event.event_name} event</h3>
+                        <Table className='custom--table'>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Time Attended</th>
+                                    <th>Time Leaved</th>
+                                    <th>Total Time Stayed</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {attendance && attendance.map((res, index)=>(
+                                    <tr key={index}>
+                                        <td>{res.first_name} {res.last_name}</td>
+                                        <td>{res.start_time ? new Date(res.start_time).toLocaleDateString() : null} {res.start_time ? new Date(res.start_time).toLocaleTimeString() : null}</td>
+                                        <td>{res.end_time ? new Date(res.end_time).toLocaleDateString() : null} {res.end_time ? new Date(res.end_time).toLocaleTimeString() : null}</td>
+                                        <td>{res.start_time && res.end_time ? <span> {Math.floor(new Date(res.end_time).getTime() - new Date(res.start_time).getTime())/1000} seconds</span> : null}</td>
+                                        {/* <td>{res.start_time && res.end_time ? moment.utc(moment(res.end_time, "HH:mm:ss").diff(moment(res.start_time, "HH:mm:ss"))).format("mm") : null}</td> */}
+                                        {/* <td>{moment(new Date(res.end_time).toLocaleTimeString()).diff(moment(new Date(res.start_time).toLocaleDateString()), 'minutes')}</td> */}
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+                    </div>
+                }
+            </Container> 
+        }
+        </>
     )
 }
 

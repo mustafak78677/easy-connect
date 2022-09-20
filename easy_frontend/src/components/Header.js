@@ -6,7 +6,7 @@ import { userLogOut } from "../actions/UserActions";
 function Header({ isStaff, userInfo }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const homePage = window.location.href === 'http://localhost:3000/' ? true :false
+  const homePage = window.location.href === 'https://localhost:3000/' || 'https://127.0.0.1:3000/' ? true :false
   const header = userInfo || homePage
   // useEffect(() => {
   //   if (!userInfo) {
@@ -54,10 +54,10 @@ function Header({ isStaff, userInfo }) {
                       <nav id="mobile-menu">
                         <ul>
                           <li>
-                            <a className="has-child" href="#0">
+                            <a href="/">
                               Home
                             </a>
-                            <ul className="submenu">
+                            {/* <ul className="submenu">
                               <li>
                                 <a href="index.html">Home1</a>
                               </li>
@@ -73,17 +73,17 @@ function Header({ isStaff, userInfo }) {
                               <li>
                                 <a href="index5.html">Home5</a>
                               </li>
-                            </ul>
+                            </ul> */}
                           </li>
                           <li>
                             <a href="#0">About</a>
                           </li>
-                          <li>
+                          {/* <li>
                             <a href="#0">Speakers</a>
                           </li>
                           <li>
                             <a href="#0">How it Work</a>
-                          </li>
+                          </li> */}
                           {/* <li><a className="has-child" href="#0">Blogs</a>
                                                         <ul className="submenu">
                                                             <li><a href="blog.html">Blogs</a></li>

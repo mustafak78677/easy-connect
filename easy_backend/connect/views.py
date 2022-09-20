@@ -12,6 +12,7 @@ from django.db.models import Q
 import datetime
 import string
 import random
+import razorpay
 
 # Create your views here.
 
@@ -260,3 +261,51 @@ def participantattendance(request):
         attendance.save()
         return Response({'message': 'success'})
         
+@api_view(['POST'])
+def createOrder(request):
+    global client
+    data = request.data
+
+    amount = int(float(data['amount']))
+
+    client = razorpay.Client(auth=("rzp_test_OLdSMrCfi85XEX", "z9aU6glWJAty9Gh6aLWZSsyV"))
+
+    data = {"amount" : amount, "currency" : "INR"}
+    payment = client.order.create(data=data)
+
+    return Response({'order_id': payment['id'], 'amount': payment['amount'], 'currency':payment['currency']})
+
+@api_view(['POST'])
+def verifySignature(request):
+    res = request.data
+
+    params_dict = {
+        'razorpay_payment_id' : res['razorpay_paymentId'],
+        'razorpay_order_id' : res['razorpay_orderId'],
+        'razorpay_signature' : res['razorpay_signature']
+    }
+
+    # verifying the signature
+    res = client.utility.verify_payment_signature(params_dict)
+
+    if res == True:
+        return Response({'status':'Payment Successful'})
+    return Response({'status':'Payment Failed'})
+
+@api_view(['POST'])
+def event_details(request):
+    data = request.data['params']
+    if Event.objects.filter(id=data['id']).exists():
+        event = Event.objects.get(id=data['id'])
+        participant = EndUser.objects.filter(upcoming_events_id=event)
+        user = User.objects.filter(id__in=participant)
+        event_serializer = EventSerializer(event, many=False).data
+        user_serializer = ParticipantSerializer(participant, many=True).data
+        print(event.event_date, datetime.date.today())
+        if event.event_date >= datetime.date.today():
+            attendance = ParticipantAttendance.objects.filter(event=event)
+            attendance_serializer = ParticipantAttendanceSerializer(attendance, many=True).data
+            return Response({'event_serializer': event_serializer, 'user_serializer': user_serializer, 'attendance_serializer': attendance_serializer})
+        return Response({'event_serializer': event_serializer, 'user_serializer': user_serializer})
+    else:
+        return Response({"error": "Something went wrong"})

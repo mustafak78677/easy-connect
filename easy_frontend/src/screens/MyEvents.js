@@ -89,6 +89,12 @@ function MyEvents({ userInfo }) {
                   </div>
                   {userInfo.is_staff ? (
                     <>
+                      <Link
+                        to={`/event/${item.id}`}
+                        className="btn--custom btn--three no-radius mr-5"
+                      >
+                        View Details
+                      </Link>
                       <Link to={`/my-event/${item.id}`}
                         className="btn--custom btn--three no-radius mr-5"
                       >

@@ -12,12 +12,13 @@ import OrganiserRegister from "./screens/OrganiseRegister";
 import Header from "./components/Header";
 import { useSelector } from "react-redux";
 import MyEvents from "./screens/MyEvents";
-import EventDetails from "./screens/EventDetails";
 import UserEventRegister from "./screens/UserEventRegister";
 import AvailableEvents from "./screens/AvailableEvents";
 import Streaming from "./screens/Streaming";
 import { useState } from "react";
 import axios from "axios";
+import EditEvent from "./screens/EditEvent";
+import EventDetails from "./screens/EventDetails";
 
 function App() {
   let isStaff = false;
@@ -80,8 +81,9 @@ function App() {
           element={<MyEvents userInfo={userInfo} />}
         ></Route>
         <Route path="/availableevents" element={<AvailableEvents />}></Route>
-        <Route path="/my-event/:id" element={<EventDetails />}></Route>
+        <Route path="/my-event/:id" element={<EditEvent />}></Route>
         <Route path="/:url" element={<UserEventRegister />}></Route>
+        <Route path="/event/:id" element={<EventDetails />}></Route>
         <Route path="/streaming/:url" element={<Streaming onUserEnter={OnUserEnter} onUserExit={OnUserExit} />}></Route>
       </Routes>
     </Router>
