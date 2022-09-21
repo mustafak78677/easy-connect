@@ -44,8 +44,9 @@ function Header({ isStaff, userInfo }) {
                 <div className="row d-flex align-items-center">
                   <div className="col-lg-3">
                     <div className="logo">
-                      <a href="index.html">
-                        <img src="/assets/img/home3/logo.png" alt="" />
+                      <a href="/">
+                        {/* <img src="/assets/img/home5/tickets1.png" alt="" /> */}
+                        <h4>Easy Connect</h4>
                       </a>
                     </div>
                   </div>
@@ -75,9 +76,9 @@ function Header({ isStaff, userInfo }) {
                               </li>
                             </ul> */}
                           </li>
-                          <li>
+                          {/* <li>
                             <a href="#0">About</a>
-                          </li>
+                          </li> */}
                           {/* <li>
                             <a href="#0">Speakers</a>
                           </li>
@@ -90,9 +91,9 @@ function Header({ isStaff, userInfo }) {
                                                             <li><a href="blog-details.html">Blog Details </a></li>
                                                         </ul>
                                                     </li> */}
-                          <li>
+                          {/* <li>
                             <a href="#0">Feedback</a>
-                          </li>
+                          </li> */}
                           <li>
                             <a href="/myevents">My Events</a>
                           </li>
@@ -111,9 +112,21 @@ function Header({ isStaff, userInfo }) {
                           ) : (
                             ""
                           )}
-                          <li onClick={logout}>
-                            <a href="javascript(void)">Logout</a>
-                          </li>
+                          {userInfo ? (
+                            <li onClick={logout}>
+                              <a href="javascript(void)">Logout</a>
+                            </li>
+
+                          ) : (
+                            <>
+                              <li>
+                                <a href="/login">Login</a>
+                              </li>
+                              <li>
+                                <a href="/register">Register</a>
+                              </li>
+                            </>
+                          )}
                         </ul>
                       </nav>
                       <div className="search-open">

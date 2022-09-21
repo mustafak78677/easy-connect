@@ -3,7 +3,7 @@ import Body from '../components/Body'
 import Footer from '../components/Footer'
 
 
-function Home() {
+function Home({isStaff}) {
 
     return (
         <>
@@ -25,7 +25,7 @@ function Home() {
             =========================== */}
             {/* =====>> Banner Area Three Starts <<===== 
             =========================== */}
-            <Body />
+            <Body isStaff={isStaff} />
             {/* =====>> Brands Area Two End <<===== 
             =========================== */}
             {/* =====>> Footer Area Three Start <<===== 

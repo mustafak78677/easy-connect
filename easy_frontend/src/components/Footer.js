@@ -9,10 +9,11 @@ function Footer() {
                         <div className="col-lg-4 col-sm-6 mt-4">
                             <div className="single-footer single-footer-three">
                                 <div className="footer-logo">
-                                    <a href="index.html"> <img src="assets/img/home3/logo2.png" alt="logo" /> </a>
+                                    {/* <a href="index.html"> <img src="assets/img/home3/logo2.png" alt="logo" /> </a> */}
+                                    <h4 className='text-white'>Easy Connect</h4>
                                 </div>
                                 <div className="footer-contents">
-                                    <p className="common-para">Dempor pede libero dapi useu class venenatis ut bibendum quam ut nibh necm. NonhPede mollis vel vitae dorpis Sed odio ultrices id, est eu mauris.</p>
+                                    <p className="common-para">Our Platform provides seamless connectivity between organisations who want to share their best industry experience and participants who want to gain knowledge and level up their skills</p>
                                     <ul className="footer-social">
                                         <li>
                                             <a href="#"> <i className="lab la-facebook-f"></i> </a>
@@ -98,7 +99,7 @@ function Footer() {
                 </div>
             </div>
             <div className="copyright-area">
-                <span className="copyright-text">Copyright Webza © 2021. All rights reserved</span>
+                <span className="copyright-text">Copyright Easy Connect © 2021. All rights reserved</span>
             </div>
         </footer>
     )

@@ -1,7 +1,35 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
 import {buildStyles, CircularProgressbar} from 'react-circular-progressbar'
+import { useSelector } from 'react-redux'
+import MyEvents from '../screens/MyEvents'
 
-function Body(userInfo) {
+function Body({isStaff}) {
+    const userLogin = useSelector(state=>state.userLogin)
+    const {userInfo} = userLogin
+    const [details, setDetails] = useState('')
+
+    const fetchStats = () => {
+        console.log('reaching here');
+        const config = {
+            headers: {
+                'content-type': 'application/json'
+            }
+        }
+
+        axios.post('/api/stats/', config).then(res=>{
+            console.log(res.data);
+            setDetails(res.data)
+        }) 
+        console.log(details.user)
+
+
+    }
+
+    useEffect(()=>{
+        fetchStats()
+    },[])
+    // const [user, setUser] = useState(userInfo ? userInfo : null)
     return (
         <>
             <section className="banner-area-three">
@@ -9,7 +37,7 @@ function Body(userInfo) {
                     <a className="video-play-btn" href="https://www.youtube.com/watch?v=iIrSCm_0Sj4"> <i className="las la-play"></i> </a>
                     <ul className="banner-social-list">
                         <li>
-                            <a href="#"> {userInfo ? userInfo.username : ''} </a>
+                            <a href="#"> </a>
                         </li>
                         <li>
                             <a href="#">  </a>
@@ -30,8 +58,12 @@ function Body(userInfo) {
                         <div className="col-lg-5">
                             <div className="banner-wrapper-trree">
                                 <div className="banner-contetns">
-                                    <h2 className="banner-title"> Choose your Best Webinar Website </h2>
-                                    <a href="#" className="btn--custom btn--three no-radius"> Buy Tickets </a>
+                                    <h2 className="banner-title"> Choose your Best Webinar </h2>
+                                    {isStaff ? (
+                                        <a href="/createevent" className="btn--custom btn--three no-radius"> Create Event </a>
+                                    ) : (
+                                        <a href="/availableevents" className="btn--custom btn--three no-radius"> Buy Tickets </a>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -42,7 +74,7 @@ function Body(userInfo) {
             =========================== */}
             {/* =====>> Countdown Area Starts <<===== 
             =========================== */}
-            <div className="countdown-area pt-150 pb-150">
+            {/* <div className="countdown-area pt-150 pb-150">
                 <div className="container">
                     <div className="row align-items-center">
                         <div className="col-lg-6">
@@ -58,7 +90,7 @@ function Body(userInfo) {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
             {/* =====>> Countdown Area End<<===== 
             =========================== */}
             {/* =====>> Join Area Three Starts <<===== 
@@ -76,14 +108,14 @@ function Body(userInfo) {
                             <div className="row mt-4 mt-lg-5">
                                 <div className="col-lg-4 col-sm-6 mt-4 wow slideInLeft">
                                     <div className="circle-progress-single">
-                                        <CircularProgressbar className="progress-circle position style--two" value={75} text={'75'} strokeWidth={2} styles={buildStyles({pathColor: '#ffaa17', trailColor: '#434444', textColor: '#ffffff', pathTransitionDuration: '2.5', textSize: '24px' })}></CircularProgressbar>
+                                        <CircularProgressbar className="progress-circle position style--two" value={50} text={'50'} strokeWidth={2} styles={buildStyles({pathColor: '#ffaa17', trailColor: '#434444', textColor: '#ffffff', pathTransitionDuration: '2.5', textSize: '24px' })}></CircularProgressbar>
                                         <p className="common-para"> 1st Step </p>
                                         <h4 className="join-circle-para"> Create Account </h4>
                                     </div>
                                 </div>
                                 <div className="col-lg-4 col-sm-6 mt-4 wow slideInUp">
                                     <div className="circle-progress-single">
-                                        <CircularProgressbar className="progress-circle position style--two" value={50} text={'50'} strokeWidth={2} styles={buildStyles({pathColor: '#ffaa17', trailColor: '#434444', textColor: '#ffffff', pathTransitionDuration: '2.5', textSize: '24px' })}></CircularProgressbar>
+                                        <CircularProgressbar className="progress-circle position style--two" value={75} text={'75'} strokeWidth={2} styles={buildStyles({pathColor: '#ffaa17', trailColor: '#434444', textColor: '#ffffff', pathTransitionDuration: '2.5', textSize: '24px' })}></CircularProgressbar>
                                         <p className="common-para"> 2nd Step </p>
                                         <h4 className="join-circle-para"> Purchase Ticket </h4>
                                     </div>
@@ -100,11 +132,93 @@ function Body(userInfo) {
                     </div>
                 </div>
             </div>
+            <section className="counter-area-three pb-150 pt-150">
+                <div className="container">
+                    <div className="row justify-content-center">
+                        <div className="col-lg-8">
+                            <div className="section-title section-title-three">
+                                <h2 className="section-heading"> Our Fun <span className="heading-light"> Number </span> </h2>
+                                {/* <p className="section-para"> Lorem Ipsum is simply dummy text of the printing and <br /> typesetting industry. </p> */}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row mt-4 mt-lg-5">
+                        <div className="col-lg-4 col-sm-6 mt-4 wow slideInUp" data-wow-delay=".2s">
+                            <div className="single-counter-three">
+                                <div className="counter-count">
+                                    {/* <h2 className="odometer" data-odometer-final=></h2> */}
+                                    <h2 className="count-title">{details && details.user}</h2>
+                                </div>
+                                <h4 className="count-para"> Total Participants </h4>
+                            </div>
+                        </div>
+                        <div className="col-lg-4 col-sm-6 mt-4 wow slideInDown" data-wow-delay=".2s">
+                            <div className="single-counter-three">
+                                <div className="counter-count">
+                                    {/* <h2 className="odometer"></h2> */}
+                                    <h2 className="count-title">{details && details.organiser}</h2>
+                                </div>
+                                <h4 className="count-para"> Total Organisers </h4>
+                            </div>
+                        </div>
+                        <div className="col-lg-4 col-sm-6 mt-4 wow slideInLeft" data-wow-delay=".2s">
+                            <div className="single-counter-three">
+                                <div className="counter-count">
+                                    {/* <h2 className="odometer" data-odometer-final=></h2> */}
+                                    <h2 className="count-title">{details && details.event}</h2>
+                                </div>
+                                <h4 className="count-para"> Total Events </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section className="idea-area-three overflow-hidden mb-3">
+                <div className="container-fluid p-0">
+                    <div className="row">
+                        <div className="col-lg-6 mobile-views" data-background="assets/img/home3/idea-left-bg.jpg"></div>
+                        <div className="col-lg-6">
+                            <div className="idea-wrapper idea-wrapper-three">
+                                <div className="idea-shapes">
+                                    <img src="assets/img/home1/idea-shape.png" alt="" />
+                                </div>
+                                <div className="single-idea single-idea-three">
+                                    <div className="idea-icon">
+                                        <img src="assets/img/home3/idea1.png" alt="" />
+                                    </div>
+                                    <div className="idea-contents">
+                                        <h3 className="common-title">Idea Share</h3>
+                                        <p className="common-para">The Organisations Partnered with us share the best of knowledge in their Respective Industry which helps you keep up to date with the latest information</p>
+                                    </div>
+                                </div>
+                                <div className="single-idea single-idea-three">
+                                    <div className="idea-icon">
+                                        <img src="assets/img/home3/idea2.png" alt="" />
+                                    </div>
+                                    <div className="idea-contents">
+                                        <h3 className="common-title">Best Speakers</h3>
+                                        <p className="common-para">Our Organisations have some of the best speakers who have excellent communication skills and can provide quality knowledge to audience by interacting with them</p>
+                                    </div>
+                                </div>
+                                <div className="single-idea single-idea-three">
+                                    <div className="idea-icon">
+                                        <img src="assets/img/home3/idea3.png" alt="" />
+                                    </div>
+                                    <div className="idea-contents">
+                                        <h3 className="common-title">Easy Access</h3>
+                                        <p className="common-para">The process of joining any webinar related to your topic is quite easy. All you have to do is register and ceate your account, and see for available webinars according to your preference and Register</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
             {/* =====>> Join Area Three End <<===== 
             =========================== */}
             {/* =====>> Tickets Area Three Starts <<===== 
             =========================== */}
-            <section className="tickets-area-three pt-150 pb-150">
+            {/* <section className="tickets-area-three pt-150 pb-150">
                 <div className="container">
                     <div className="row justify-content-center">
                         <div className="col-lg-8">
@@ -187,7 +301,8 @@ function Body(userInfo) {
                         </div>
                     </div>
                 </div>
-            </section>
+            </section> */}
+            {/* <MyEvents userInfo={userInfo} /> */}
             {/* =====>> Tickets Area Three End <<===== 
             =========================== */}
             {/* =====>> Speakers Area Three Starts <<===== 
@@ -254,7 +369,7 @@ function Body(userInfo) {
             =========================== */}
             {/* =====>> Upcoming Area Three Starts <<===== 
             =========================== */}
-            <section className="upcoming-area-three pb-150">
+            {/* <section className="upcoming-area-three pb-150">
                 <div className="container">
                     <div className="upcoming-half-bg">
                         <div className="row justify-content-lg-end">
@@ -381,7 +496,7 @@ function Body(userInfo) {
             =========================== */}
             {/* =====>> Descount Area Two Start <<===== 
             =========================== */}
-            <section className="discount-area discount-area-two bg-base--section3 pt-120 pb-120">
+            {/*<section className="discount-area discount-area-two bg-base--section3 pt-120 pb-120">
                 <div className="container">
                     <div className="discount-wrapper text-center">
                         <div className="section-title">
@@ -390,109 +505,29 @@ function Body(userInfo) {
                         <a href="#" className="btn--custom btn--three no-radius"> Buy Now </a>
                     </div>
                 </div>
-            </section>
+            </section> */}
             {/* =====>> Descount Area Two End <<===== 
             =========================== */}
             {/* =====>> Idea Area Three Start <<===== 
             =========================== */}
-            <section className="idea-area-three overflow-hidden">
-                <div className="container-fluid p-0">
-                    <div className="row">
-                        <div className="col-lg-6 mobile-views" data-background="assets/img/home3/idea-left-bg.jpg"></div>
-                        <div className="col-lg-6">
-                            <div className="idea-wrapper idea-wrapper-three">
-                                <div className="idea-shapes">
-                                    <img src="assets/img/home1/idea-shape.png" alt="" />
-                                </div>
-                                <div className="single-idea single-idea-three">
-                                    <div className="idea-icon">
-                                        <img src="assets/img/home3/idea1.png" alt="" />
-                                    </div>
-                                    <div className="idea-contents">
-                                        <h3 className="common-title">Idea Share</h3>
-                                        <p className="common-para">Sondimentum velit purus, nec mi ante tumst eu eu, nec et quis sit proin lectus sed. Scerisque donec aliquam solltudin tellus praesent sodales imperdiet</p>
-                                    </div>
-                                </div>
-                                <div className="single-idea single-idea-three">
-                                    <div className="idea-icon">
-                                        <img src="assets/img/home3/idea2.png" alt="" />
-                                    </div>
-                                    <div className="idea-contents">
-                                        <h3 className="common-title">Best Speakers</h3>
-                                        <p className="common-para">Sondimentum velit purus, nec mi ante tumst eu eu, nec et quis sit proin lectus sed. Scerisque donec aliquam solltudin tellus praesent sodales imperdiet</p>
-                                    </div>
-                                </div>
-                                <div className="single-idea single-idea-three">
-                                    <div className="idea-icon">
-                                        <img src="assets/img/home3/idea3.png" alt="" />
-                                    </div>
-                                    <div className="idea-contents">
-                                        <h3 className="common-title">Daily Update</h3>
-                                        <p className="common-para">Sondimentum velit purus, nec mi ante tumst eu eu, nec et quis sit proin lectus sed. Scerisque donec aliquam solltudin tellus praesent sodales imperdiet</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+
             {/* =====>> Idea Area Three End <<===== 
             =========================== */}
             {/* =====>> Counter Area Three Start <<===== 
             =========================== */}
-            <section className="counter-area-three pb-150 pt-150">
-                <div className="container">
-                    <div className="row justify-content-center">
-                        <div className="col-lg-8">
-                            <div className="section-title section-title-three">
-                                <h2 className="section-heading"> Our Fun <span className="heading-light"> Number </span> </h2>
-                                <p className="section-para"> Lorem Ipsum is simply dummy text of the printing and <br /> typesetting industry. </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row mt-4 mt-lg-5">
-                        <div className="col-lg-4 col-sm-6 mt-4 wow slideInUp" data-wow-delay=".2s">
-                            <div className="single-counter-three">
-                                <div className="counter-count">
-                                    <h2 className="odometer" data-odometer-final="25"></h2>
-                                    <h4 className="count-title">K</h4>
-                                </div>
-                                <h4 className="count-para"> Total Members </h4>
-                            </div>
-                        </div>
-                        <div className="col-lg-4 col-sm-6 mt-4 wow slideInDown" data-wow-delay=".2s">
-                            <div className="single-counter-three">
-                                <div className="counter-count">
-                                    <h2 className="odometer" data-odometer-final="52"></h2>
-                                    <h4 className="count-title">K</h4>
-                                </div>
-                                <h4 className="count-para"> Total Speakers </h4>
-                            </div>
-                        </div>
-                        <div className="col-lg-4 col-sm-6 mt-4 wow slideInLeft" data-wow-delay=".2s">
-                            <div className="single-counter-three">
-                                <div className="counter-count">
-                                    <h2 className="odometer" data-odometer-final="15"></h2>
-                                    <h4 className="count-title">K </h4>
-                                </div>
-                                <h4 className="count-para"> Total Seminar </h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            
             {/* =====>> Counter Area Three End <<===== 
             =========================== */}
             {/* =====>> Video Area End <<===== 
             =========================== */}
-            <div className="video-area">
+            {/* <div className="video-area">
                 <div className="container">
                     <div className="video-images wow fadeInUp" data-wow-delay=".2s">
                         <img src="assets/img/home3/video-images.jpg" alt="" />
                         <a className="video-play-btn" href="https://www.youtube.com/watch?v=iIrSCm_0Sj4"> <i className="las la-play"></i> </a>
                     </div>
                 </div>
-            </div>
+            </div> */}
             {/* =====>> Video Area End <<===== 
             =========================== */}
             {/* =====>> Testimonial Area Three Starts <<===== 

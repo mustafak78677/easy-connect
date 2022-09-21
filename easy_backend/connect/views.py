@@ -309,3 +309,11 @@ def event_details(request):
         return Response({'event_serializer': event_serializer, 'user_serializer': user_serializer})
     else:
         return Response({"error": "Something went wrong"})
+
+@api_view(['POST'])
+def stats(request):
+    user = EndUser.objects.filter().all().count()
+    organiser = Organisation.objects.filter().all().count()
+    event = Event.objects.filter().all().count()
+    print(user, organiser, event)
+    return Response({'user': user, 'organiser': organiser, 'event': event})

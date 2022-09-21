@@ -19,7 +19,7 @@ function EventDetails() {
     
         const params = {'id': id}
 
-        const {data} = await axios.post('/api/event_details/', {params}, config)
+        const {data} = await axios.post('/api/stats/', {params}, config)
         setEvent(data.event_serializer)
         setUser(data.user_serializer)
         data.attendance_serializer ? setAttendance(data.attendance_serializer) : setAttendance([])
@@ -65,7 +65,7 @@ function EventDetails() {
                         <h3 className='mt-lg-5 text-light text-center'>Attendance log for {event.event_name} event</h3>
                         <Table className='custom--table'>
                             <thead>
-                                <tr>
+                                <tr className='text-center'>
                                     <th>Name</th>
                                     <th>Time Attended</th>
                                     <th>Time Leaved</th>
